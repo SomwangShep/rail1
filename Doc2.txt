@@ -1,0 +1,9 @@
+rails server -b $IP -p $PORT
+Gemfile = bundle install
+routes.rb = rake routes
+
+
+views/pages/home.html.erb is the display
+custom.css.scss
+application.html.erb
+home.html.erb

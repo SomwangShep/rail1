@@ -1,0 +1,306 @@
+git clone git@github.com:SomwangShep/MyRuby.git
+rails server -b $IP -p $PORT    started  server
+rails new blog                  create a new template, make sure you are at the root directory (not showing workspace)
+clear
+ls
+pwd     check current path
+cd ...  up 1 level
+
+
+database
+'rake db:migrate' if getting eror run below, 'bubdle update' then run 'bundle install' you should be fine
+
+git remote add origin git@github.com:SomwangShep/ruby.git   = make it to piont to my github
+git remote -v   make sure show 
+origin  git@github.com:SomwangShep/ruby.git (fetch)
+origin  git@github.com:SomwangShep/ruby.git (push)
+git push -u origin master   = push to git hub
+
+gomockingbird.com/mockingbird   
+
+=========================================================================================
+video use "ruby 2.1.4" in Gemfile but I need to current version in cloud 9 "ruby '2.3.0'"
+ruby -v = 2.3.0, rails -v = 4.2.5, git version = 2.11.0
+-----set up config---------------
+git config --global user.name "SomwangShep"
+git config --global user.email "somwang@gmail.com"
+git config --list
+
+lec #6
+
+lec #7 add ssh key
+rails generate controller Welcome index
+cat ~/.ssh/id_rsa.pub   ssh key, copy the whole thing, go to github in setting profile/SSH key
+
+lec #8 -9 blog MVC clone the blog
+git remote -v   display orogin if it list, you can remove by below (remove pointing)
+git remote rm origin
+
+lect #10 - page desing, check route
+rake routes
+see message below
+------------------------------
+You don't have any routes defined!
+
+Please add some routes in config/routes.rb.
+-------------------------------------
+if you run your server and '/home' gettin gmessage below
+------------------------------
+No route matches [GET] "/home"
+------------------------------
+mean you not yet set the route
+app/config/routes.rb
+dlete all comment
+add below
+---------------------------------
+get '/home', to: 'pages#home'
+---------------------------------
+save then 
+rake routes
+see error
+---------------------
+uninitialized constant PagesController
+---------------------
+create a new file call 'pages_controller.rb' in app/controllers
+add
+------------------
+class PagesController < ApplicationController
+    def home
+    end
+end
+------------------
+reload page - see mising template
+
+-build template-
+create new folder call 'pages' in workspace/views
+then a new file call 'home.html.erb' under that
+in home file we will put HTML in there
+---------------------------------------
+<h1>Hello World</h1>
+----------------------------------------
+refresh you page (https://rail1-somwang.c9users.io/home), you should see 'Hello World'. You ar good to go
+
+lect #11 bootstrap
+
+lect #12 install bootstrap
+
+https://github.com/twbs/bootstrap-sass = bootstrap gem files
+add 
+gem 'bootstrap-sass', '~> 3.3.6'
+
+run - bundle install
+all of JS and CSS are in app/assets folder
+create new fiel call 'custom.css.scss' in app/assets/stylesheets
+add
+--------------------
+@import "bootstrap-sprockets";
+@import "bootstrap";
+--------------------------
+add below to application.js
+-----------------------
+ //= require bootstrap-sprockets
+---------------------------- 
+
+lect #13 ruby code symbol
+
+views/layouts/application.html = this is the main layout for entri appliction
+more working on formatingpage
+
+add in custom.css.scss and other css formating
+---------------------------------
+$navbar-default-bg:#312312;
+$light-orange:#ff8c00;
+$navbar-default-color:$light-orange;
+---------------------------------
+
+lec #14 - cont. stylig page
+
+ls -a     = will show hidden file or goto setting check 'show hidden file'
+
+.gitignore file is in workspace, add last 2 lines
+---------------------------------------------
+# Ignore all cloud9 and hidden files files
+.c9/
+-------------------------------------------
+
+
+in application.html if too busy we can make it partial by remove som section in to 
+app/layouts and create a new fiel call _navigation.html.erb
+
+-deploy to heroku in lec#17-
+
+https://learnrubythehardway.org/book/
+
+-database-
+rails generate migration create_users
+if you get error then run = bundle install
+add t. in the file 
+      t.string:username,:email
+      t.timestamps
+
+then run = rake db:migrate
+you need to create model in = blog/app/models by
+create new file call user.rb, then 2 lines below
+---------------------------------------
+class User < ActiveRecord::Base
+    has_many :articles
+end
+--------------------------------------
+in article.rb type below
+
+-------------------
+belongs_to :user
+-------------------
+
+then chec by type
+rails console
+press ctrl+l to clear out
+to testing below
+User.all
+
+User.create(username:"John", email:"john@gmail.com")
+
+create fK below
+rails generate migration add_user_id_to_articles
+you will see '20170401140503_add_user_id_to_articles' in migrate folder
+type
+-----------------------
+add_colum:articles, :user_id, :integer
+----------------------------
+run 
+rake db:migrate
+
+===========switch to workspace=======create hef to recipee relationship===========
+
+rails generate migration create_recipes
+you will see '20170401143344_create_recipes' in db/migrate
+----------------------------------
+      t.string :name
+      t.text :summary
+      t.text :description
+      t.timestamps
+----------------------------------
+rake db:migrate
+
+-create model of recipes table- below
+create a new fiel call 'recipe.rb' in app/models
+then add
+-------------------------------
+class Recipe < ActiveRecord::Base
+end
+---------------------------------
+rails console
+ctrl+l
+type Recipe inconsole you will get 'Recipe (call 'Recipe.connection' to establish a connection) '
+Recipe.all
+Recipe = you should see 'Recipe(id: integer, name: string, summary: text, description: text, created_at: datetime, updated_at: datetime)'
+
+-create chef table-
+rails generate migration create_chefs
+you will see '20170401145036_create_chefs' in app/db/migrate
+add below
+---------------------------------------
+      t.string :chefname
+      t.string :email
+      t.timestamps
+------------------------------------      
+run = rake db:migrate
+create a new fiel call 'chef.rb' in app/models
+type below
+----------------------
+class Chef < ActiveRecord::Base
+end
+-----------------------
+run = rails console
+ctrl+l
+Chef.all
+Chef
+
+receip = Recipe.new
+you will see nil in each field men you hav nothing in your database
+receip.summary = "This is a spicy dish"
+if you receip.valid? you will get true
+receip.save to save the record
+
+to destroy the database
+recipes.destroy - this will dele that table
+
+
+we can do test databse in test folder by create a new file call 'recipe_test.rb' in test/models folder
+@ = instant varible if you not include it wil be local varible
+to run test
+rake test
+watch lec # 25-26
+VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+
+create relationship FK key in recipes
+rails generate migration add_chef_id_to_recipes
+you will see '20170401193614_add_chef_id_to_recipes' in db/migrat folder
+add below
+--------------------
+add_column :recipes, :chef_id, :integer
+----------------------------------
+add has_many :recipes in chef.rb
+add belongs_to :chef in recipe.rb
+
+rails console
+Chef.first
+Chef.all
+chef = Chef.create(chefname: "bob", email: "bob@example.com")
+
+chef.errors.full_messages   to cheking the error detail
+
+===need to set the origin to point to git url======
+git status
+git add -A
+git commit -m "create chefs and recipes"
+git status
+git push origin master
+
+need to create route
+config/routes.rb
+add below
+--------------------
+ get '/recipes', to: 'recipes#index'
+ get '/recipes/new', to: 'recipes#new', as: 'new_recipe'
+--------------------
+create a new fiel call 'recipes_controller.rb' in controller
+type
+------------------
+class RecipesController < ApplicationController
+
+    def index
+    
+    end
+
+end
+---------------------
+create a new folder call 'recipes' in 'view'
+create a new file call 'index.html.erb' in 'recipes' folder
+
+to call partial use <%= render 'form' %> = form is a name of your file call '_form_html.erb' in recipes folder
+
+line below is to chaneg button text base on type - wicky cool!!!!
+<%= f.submitted(@recipe.new_record? ? 'Create Recipe' : 'Edit Recipe', class: "btn btn-success")%>
+
+for share you should use object by using 'obj' instead of '@recipe'
+in foprm that calling eror
+<%= render 'shared/errors', obj: @recip %> = this is calling '_errors.html.erb' in shared folder by pasing @recipe
+
+create a new branch
+git checkout -b nameofyoubranch
+after you make chaneg to your gem file you need to run 'Bundle install'
+
+
+rails generate uploader Picture = this will create uploaders folder and 'picture_uploader.rb' in it
+
+
+add a new column in to table recipe
+rails generate migration add_picture_to_recipe picture:string
+rake db:migrate = to run migration from code above
+
+
+
+
+
+
