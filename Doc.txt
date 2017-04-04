@@ -123,9 +123,35 @@ ls -a     = will show hidden file or goto setting check 'show hidden file'
 .c9/
 -------------------------------------------
 
+Lec#15
+-------git repository-------
+git init
+git add -A
+git status
+git commit -m "inilize repo an dbuild home page"
+git status
+
+create a new repository in github and make sure that SSH is check
+git remote add origin git@github.com:SomwangShep/rail1.git
+git remote -v
+--------------------------------------------------
+origin  git@github.com:SomwangShep/rail1.git (fetch)
+origin  git@github.com:SomwangShep/rail1.git (push)
+--------------------------------------------------
+the orining get set to rails
+git push -u origin master
+you should see your files upload in GitHub
 
 in application.html if too busy we can make it partial by remove som section in to 
 app/layouts and create a new fiel call _navigation.html.erb
+
+to make route route go to home page
+config/routes.rb then add below
+------------------
+root 'pages#home'
+----------------
+now it should got o home when we run https://rail1-somwang.c9users.io/ auto without '/home'
+
 
 -deploy to heroku in lec#17-
 

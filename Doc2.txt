@@ -5,5 +5,5 @@ routes.rb = rake routes
 
 views/pages/home.html.erb is the display
 custom.css.scss
-application.html.erb
-home.html.erb
+application.html.erb = layout
+home.html.erb = pages
